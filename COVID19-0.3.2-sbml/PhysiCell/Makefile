@@ -19,8 +19,8 @@ CFLAGS := -fomit-frame-pointer -m64 -std=c++11 -D LIBROADRUNNER
 #   -g
 LINKER_FLAGS :=
 
-LIBRR_DIR := $(HOME)/libroadrunner/roadrunner-osx-10.9-cp36m
-LIBRR_LIBS := $(HOME)/libroadrunner/roadrunner-osx-10.9-cp36m/lib
+LIBRR_DIR := $(HOME)/libroadrunner/$(shell ls $(HOME)/libroadrunner | grep -v gz)
+LIBRR_LIBS := $(LIBRR_DIR)/lib
 LIBRR_CFLAGS := -I ${LIBRR_DIR}/include/rr/C
 
 OSFLAG :=
