@@ -17,10 +17,11 @@ CFLAGS := -fomit-frame-pointer -m64 -std=c++11 -D LIBROADRUNNER
 #   -Ofast -s -mfpmath=both
 #   -O3
 #   -g
+LINKER_FLAGS :=
 
 LIBRR_DIR := $(HOME)/libroadrunner/roadrunner-osx-10.9-cp36m
 LIBRR_LIBS := $(HOME)/libroadrunner/roadrunner-osx-10.9-cp36m/lib
-LIBRR_CFLAGS := -I${LIBRR_DIR}/include/rr/C
+LIBRR_CFLAGS := -I ${LIBRR_DIR}/include/rr/C
 
 OSFLAG :=
 ifeq ($(OS),Windows_NT)
@@ -45,9 +46,8 @@ else
                 ifeq ($(CC_TEST_OUTPUT),clang)
 	            BREW_HOME := $(HOME)/brew
 		    OMP_INCLUDE := -I $(BREW_HOME)/include
-		    PATH_TO_OMP := -L$(shell brew --prefix libomp)/lib
-		    OMP_LIB := $(PATH_TO_OMP) -lomp
-                    CFLAGS := $(CFLAGS) $(OMP_LIB)
+                    CFLAGS := $(CFLAGS) $(OMP_INCLUDE)
+	            LINKER_FLAGS := $(LINKER_FLAGS) -L$(shell brew --prefix libomp)/lib -lomp
                 endif
 		OSFLAG += -D OSX
 	        CFLAGS := $(CFLAGS) -Xpreprocessor -fopenmp
@@ -93,7 +93,7 @@ all: main.cpp $(ALL_OBJECTS)
 	@echo LIBRR_CFLAGS= $(LIBRR_CFLAGS)
 	@echo LIBRR_LIBS= $(LIBRR_LIBS)
 	@echo
-	$(COMPILE_COMMAND) $(OMP_LIB) -o $(PROGRAM_NAME) $(ALL_OBJECTS) main.cpp -L$(LIBRR_LIBS) -lroadrunner_c_api
+	$(COMPILE_COMMAND) $(LINKER_FLAGS) -o $(PROGRAM_NAME) $(ALL_OBJECTS) main.cpp -L$(LIBRR_LIBS) -lroadrunner_c_api
 	@echo
 	@echo created $(PROGRAM_NAME)
 	@echo
