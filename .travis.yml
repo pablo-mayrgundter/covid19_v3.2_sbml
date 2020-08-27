@@ -22,7 +22,6 @@ script:
         export PATH=/C/tools/msys64/mingw64/bin:/mingw64/bin/:$PATH
         export MAKE=mingw32-make  # so that Autotools can find it
   esac
-  find / -name make | head -100
   ./build.sh
 
 before_cache:
