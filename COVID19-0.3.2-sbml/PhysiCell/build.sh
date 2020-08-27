@@ -1,2 +1,2 @@
 echo | python3 beta/setup_libroadrunner.py
-make
+make || mingw32-make
